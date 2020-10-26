@@ -1,8 +1,28 @@
 import React from 'react';
+import { BrowserRouter as Router, Switch } from 'react-router-dom';
+import { IsUserRedirect, ProtectedRoute } from './helpers/routes';
+import * as ROUTES from './constants/routes';
 
-function App() {
+const App: React.FC = () => {
+  const user = null;
+
   return (
-    <div>Profitfy.me</div>
+    <Router>
+      <Switch>
+        <IsUserRedirect user={user} loggedInPath={ROUTES.DASHBOARD} path={ROUTES.SIGN_IN}>
+          <div>SignIn</div>
+        </IsUserRedirect>
+        <IsUserRedirect user={user} loggedInPath={ROUTES.DASHBOARD} path={ROUTES.SIGN_UP}>
+          <div>SignUp</div>
+        </IsUserRedirect>
+        <ProtectedRoute user={user} path={ROUTES.DASHBOARD}>
+          <div>Dashboard</div>
+        </ProtectedRoute>
+        <IsUserRedirect user={user} loggedInPath={ROUTES.DASHBOARD} path={ROUTES.HOME}>
+          <div>Home</div>
+        </IsUserRedirect>
+      </Switch>
+    </Router>
   );
 }
 
