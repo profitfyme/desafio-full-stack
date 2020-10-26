@@ -11,20 +11,72 @@ import EmailIcon from '../../assets/images/email.svg';
 import BrandBrIcon from '../../assets/images/brand-br.svg';
 import UnlockIcon from '../../assets/images/unlock.svg';
 import SendIcon from '../../assets/images/send.svg';
+import { ActionTypes, useAuth } from '../../providers/Auth/useAuth';
 
 const SignUp: React.FC = () => {
+  const [state, dispatch] = useAuth();
+
+  const isActive = React.useMemo(() => {
+    return !!state.user?.firstname
+      && !!state.user?.lastname
+      && !!state.user?.email;
+  }, [state.user?.firstname, state.user?.lastname, state.user?.email]);
+
+  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+  }
+
   return (
     <Profitfyme>
       <LogoWrap>
         <Profitfyme.Logo />
       </LogoWrap>
 
-      <Form>
+      <Form onSubmit={handleSubmit}>
         <Form.Header>Informe seus dados</Form.Header>
 
-        <Input placeholder="Nome" icon={UserIcon} />
-        <Input placeholder="Sobrenome" icon={UserCircleIcon} />
-        <Input placeholder="Email Pessoal" icon={EmailIcon} />
+        <Input
+          placeholder="Nome"
+          icon={UserIcon}
+          onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+            dispatch({
+              type: ActionTypes.SET_USER,
+              user: {
+                ...state.user,
+                firstname: event.currentTarget.value,
+              },
+            });
+          }}
+        />
+
+        <Input
+          placeholder="Sobrenome"
+          icon={UserCircleIcon}
+          onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+            dispatch({
+              type: ActionTypes.SET_USER,
+              user: {
+                ...state.user,
+                lastname: event.currentTarget.value,
+              },
+            });
+          }}
+        />
+
+        <Input
+          placeholder="Email Pessoal"
+          icon={EmailIcon}
+          onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+            dispatch({
+              type: ActionTypes.SET_USER,
+              user: {
+                ...state.user,
+                email: event.currentTarget.value,
+              },
+            });
+          }}
+        />
+
         <Input placeholder="" icon={BrandBrIcon} />
         <Input type="password" placeholder="Senha" icon={UnlockIcon} />
         <Input type="password" placeholder="Confirma senha" icon={UnlockIcon} />
@@ -33,8 +85,8 @@ const SignUp: React.FC = () => {
           Ao se cadastrar você automaticamente concorda com nossos <a href="#/">Termos de Uso</a>
         </Term>
 
-        <SubmitBtn>
-          <img src={SendIcon} alt=""/>
+        <SubmitBtn isActive={isActive}>
+          <img src={SendIcon} alt="submit"/>
           Cadastrar
         </SubmitBtn>
       </Form>

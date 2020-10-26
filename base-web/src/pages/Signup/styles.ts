@@ -37,8 +37,12 @@ export const Term = styled.p`
   }
 `;
 
-export const SubmitBtn = styled.button`
-  background: #7DD56F;
+interface SubmitBtnProps {
+  isActive?: boolean;
+}
+
+export const SubmitBtn = styled.button<SubmitBtnProps>`
+  background: ${props => props.isActive ? '#7DD56F' : '#a8e2a1'};
   box-shadow: 0px 4px 10px rgba(125, 213, 111, 0.4);
   border-radius: 4px;
   border: 0;

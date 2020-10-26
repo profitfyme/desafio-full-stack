@@ -5,10 +5,7 @@ import Input from '../../components/Shared/Fields/Input';
 
 import { LogoWrap, SubmitBtn } from './styles';
 
-import UserIcon from '../../assets/images/user.svg';
-import UserCircleIcon from '../../assets/images/user-circle.svg';
 import EmailIcon from '../../assets/images/email.svg';
-import BrandBrIcon from '../../assets/images/brand-br.svg';
 import UnlockIcon from '../../assets/images/unlock.svg';
 import SendIcon from '../../assets/images/send.svg';
 

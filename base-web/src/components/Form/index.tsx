@@ -15,9 +15,13 @@ interface FormProps {
   Footer: typeof FormFooter;
 }
 
-const Form: FormProps & React.FC = ({ children }) => {
+interface Props {
+  onSubmit?: (event: React.FormEvent<HTMLFormElement>) => void;
+}
+
+const Form: FormProps & React.FC<Props> = ({ onSubmit, children }) => {
   return (
-    <Container>{children}</Container>
+    <Container onSubmit={onSubmit}>{children}</Container>
   );
 }
 
