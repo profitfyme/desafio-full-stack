@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Switch } from 'react-router-dom';
 import { IsUserRedirect, ProtectedRoute } from './helpers/routes';
 import * as ROUTES from './constants/routes';
+import Home from './pages/Home';
 
 const App: React.FC = () => {
   const user = null;
@@ -19,7 +20,7 @@ const App: React.FC = () => {
           <div>Dashboard</div>
         </ProtectedRoute>
         <IsUserRedirect user={user} loggedInPath={ROUTES.DASHBOARD} path={ROUTES.HOME}>
-          <div>Home</div>
+          <Home />
         </IsUserRedirect>
       </Switch>
     </Router>
