@@ -1,7 +1,7 @@
 export interface User {
-  id: string;
+  id?: string | null;
   firstname: string;
   lastname: string;
   email: string;
-  updatedAt: string;
+  updatedAt?: string | null;
 }
