@@ -2,6 +2,7 @@ import styled from 'styled-components/macro';
 
 export const Container = styled.div`
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   height: 100vh;
@@ -10,23 +11,5 @@ export const Container = styled.div`
 `;
 
 export const Logo = styled.img`
-  @media only screen and (max-width: 600px) {
-    width: 250px;
-  }
-
-  @media only screen and (min-width: 600px) {
-    width: 250px;
-  }
-
-  @media only screen and (min-width: 768px) {
-    width: 550px;
-  }
-
-  @media only screen and (min-width: 992px) {
-    width: 550px;
-  }
-
-  @media only screen and (min-width: 1200px) {
-    width: 550px;
-  }
+  width: 100%;
 `;

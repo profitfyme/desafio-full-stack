@@ -1,12 +1,16 @@
 import React from 'react';
 import Profitfyme from '../../components/Profitfyme';
 
-// import { Container } from './styles';
+import { ImageWrap } from './styles';
 
 const Home: React.FC = () => {
   return (
     <Profitfyme>
-      <Profitfyme.LogoTest />
+
+      <ImageWrap>
+        <Profitfyme.LogoTest />
+      </ImageWrap>
+
     </Profitfyme>
   );
 }

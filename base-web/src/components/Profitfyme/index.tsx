@@ -13,12 +13,12 @@ const ProfitfymeLogoTest: React.FC = React.memo(() => {
   return <Logo src={LogoTestIcon} alt="logo" />;
 });
 
-interface Profitfyme {
+interface ProfitfymeProps {
   Logo: typeof ProfitfymeLogo;
   LogoTest: typeof ProfitfymeLogoTest;
 }
 
-const Profitfyme: Profitfyme & React.FC = ({ children }) => {
+const Profitfyme: ProfitfymeProps & React.FC = ({ children }) => {
   return (
     <Container>{children}</Container>
   );
