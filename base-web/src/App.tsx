@@ -5,6 +5,7 @@ import * as ROUTES from './constants/routes';
 
 import Home from './pages/Home';
 import SignUp from './pages/SignUp';
+import SignIn from './pages/SignIn';
 
 const App: React.FC = () => {
   const user = null;
@@ -13,7 +14,7 @@ const App: React.FC = () => {
     <Router>
       <Switch>
         <IsUserRedirect user={user} loggedInPath={ROUTES.DASHBOARD} path={ROUTES.SIGN_IN}>
-          <div>SignIn</div>
+          <SignIn />
         </IsUserRedirect>
         <IsUserRedirect user={user} loggedInPath={ROUTES.DASHBOARD} path={ROUTES.SIGN_UP}>
           <SignUp />
