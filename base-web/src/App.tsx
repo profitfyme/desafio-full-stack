@@ -11,26 +11,24 @@ import { AuthProvider } from './providers/Auth/useAuth';
 import reducer, { initialState } from './providers/Auth/reducer';
 
 const App: React.FC = () => {
-  const user = null;
-
   return (
     <Router>
       <AuthProvider initialState={initialState} reducer={reducer}>
         <Switch>
-          <IsUserRedirect user={user} loggedInPath={ROUTES.DASHBOARD} path={ROUTES.RECOVER}>
+          <IsUserRedirect loggedInPath={ROUTES.DASHBOARD} path={ROUTES.RECOVER}>
             <Recover />
           </IsUserRedirect>
-          <IsUserRedirect user={user} loggedInPath={ROUTES.DASHBOARD} path={ROUTES.SIGN_IN}>
+          <IsUserRedirect loggedInPath={ROUTES.DASHBOARD} path={ROUTES.SIGN_IN}>
             <SignIn />
           </IsUserRedirect>
-          <IsUserRedirect user={user} loggedInPath={ROUTES.DASHBOARD} path={ROUTES.SIGN_UP}>
+          <IsUserRedirect loggedInPath={ROUTES.DASHBOARD} path={ROUTES.SIGN_UP}>
             <SignUp />
           </IsUserRedirect>
-          <ProtectedRoute user={user} path={ROUTES.DASHBOARD}>
-            <div>Dashboard</div>
-          </ProtectedRoute>
-          <IsUserRedirect user={user} loggedInPath={ROUTES.DASHBOARD} path={ROUTES.HOME}>
+          <ProtectedRoute path={ROUTES.DASHBOARD}>
             <Home />
+          </ProtectedRoute>
+          <IsUserRedirect loggedInPath={ROUTES.DASHBOARD} path={ROUTES.ROOT}>
+            <SignIn />
           </IsUserRedirect>
         </Switch>
       </AuthProvider>

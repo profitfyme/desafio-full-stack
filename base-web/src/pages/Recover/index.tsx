@@ -6,7 +6,6 @@ import Input from '../../components/Shared/Fields/Input';
 import { LogoWrap, SubmitBtn } from './styles';
 
 import EmailIcon from '../../assets/images/email.svg';
-import UnlockIcon from '../../assets/images/unlock.svg';
 import SendIcon from '../../assets/images/send.svg';
 
 const Recover: React.FC = () => {

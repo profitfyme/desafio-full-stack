@@ -12,6 +12,7 @@ export interface InitialState {
 export enum ActionTypes {
   SET_USER = 'SET_USER',
   SET_PASSWORD = 'SET_PASSWORD',
+  SET_TOKEN = 'SET_TOKEN',
   SET_INITIAL_STATE = 'SET_INITIAL_STATE',
 }
 

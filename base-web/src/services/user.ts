@@ -11,9 +11,9 @@ export class UserService {
     });
   }
 
-  // public login(email: string, password: string) {
-  //   return this.apiService.login('/v1/auth/signin', { email, password });
-  // }
+  public login(email: string, password: string) {
+    return this.apiService.login('/v1/auth/signin', { email, password });
+  }
 }
 
 const userService = new UserService(apiService);

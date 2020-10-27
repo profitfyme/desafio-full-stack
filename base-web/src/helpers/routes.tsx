@@ -1,25 +1,27 @@
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
-import { User } from '../interfaces/models/user.interface';
+import { useAuth } from '../providers/Auth/useAuth';
 
 interface Props {
-  user: User | null;
   loggedInPath?: string;
   path: string;
   children: React.ReactNode;
 }
 
 export function IsUserRedirect(props: Props) {
-  const { user, loggedInPath, path, children } = props;
+  const { loggedInPath, path, children } = props;
+
+  const [state] = useAuth();
+
   return (
     <Route
       path={path}
       render={() => {
-        if (!user) {
+        if (!state.token) {
           return children;
         }
 
-        if (user) {
+        if (state.token) {
           return (
             <Redirect
               to={{
@@ -36,16 +38,19 @@ export function IsUserRedirect(props: Props) {
 }
 
 export function ProtectedRoute(props: Props) {
-  const { user, path, children } = props;
+  const { path, children } = props;
+
+  const [state] = useAuth();
+
   return (
     <Route
       path={path}
       render={({ location }) => {
-        if (user) {
+        if (state.token) {
           return children;
         }
 
-        if (!user) {
+        if (!state.token) {
           return (
             <Redirect
               to={{

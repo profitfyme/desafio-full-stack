@@ -9,15 +9,19 @@ export class ApiService {
     this.api = axios.create({ baseURL });
   }
 
-  // public async login(url: string, data?: any, config?: AxiosRequestConfig) {
-  //   const response = await this.post(url, data, config);
-  //   console.log(response)
-  //   this.api.defaults.headers.Authorization = `Bearer ${token}`;
-  // }
+  public async login(url: string, data?: any, config?: AxiosRequestConfig) {
+    const response = await this.post(url, data, config);
+    const { body } = response.data;
+    const { accessToken } = body.data;
 
-  // public logout() {
-  //   this.api.defaults.headers.Authorization = null;
-  // }
+    this.api.defaults.headers.Authorization = `Bearer ${accessToken}`;
+
+    return accessToken;
+  }
+
+  public logout() {
+    this.api.defaults.headers.Authorization = null;
+  }
 
   public get<T = any>(url: string, config?: AxiosRequestConfig) {
     return this.api.get<T>(url, config);

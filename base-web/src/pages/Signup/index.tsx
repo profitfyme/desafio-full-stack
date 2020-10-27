@@ -54,7 +54,7 @@ const SignUp: React.FC = () => {
     if (status === 'success') {
       history.push(SIGN_IN);
     }
-  }, [status])
+  }, [status, history])
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();

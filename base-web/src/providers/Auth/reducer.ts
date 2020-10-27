@@ -24,6 +24,12 @@ const reducer = (state: InitialState, action: Action) => {
         password: action.password,
       };
 
+    case ActionTypes.SET_TOKEN:
+      return {
+        ...state,
+        token: action.token,
+      };
+
     case ActionTypes.SET_INITIAL_STATE:
       return {
         ...action,
