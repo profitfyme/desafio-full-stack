@@ -9,7 +9,7 @@ import EmailIcon from '../../assets/images/email.svg';
 import UnlockIcon from '../../assets/images/unlock.svg';
 import SendIcon from '../../assets/images/send.svg';
 
-const SignIn: React.FC = () => {
+const Recover: React.FC = () => {
   return (
     <Profitfyme>
       <LogoWrap>
@@ -17,23 +17,22 @@ const SignIn: React.FC = () => {
       </LogoWrap>
 
       <Form>
-        <Form.Header>Insira suas credenciais</Form.Header>
+        <Form.Header>Quero recuperar minha senha!</Form.Header>
 
         <Input placeholder="Email Pessoal" icon={EmailIcon} />
-        <Input type="password" placeholder="Senha" icon={UnlockIcon} />
 
         <SubmitBtn>
           <img src={SendIcon} alt="submit"/>
-          Logar
+          Enviar
         </SubmitBtn>
       </Form>
 
       <Form.Footer>
-        <Form.Link to="/recover">Esqueceu sua senha?</Form.Link>
         <Form.Link to="/signup">Registrar</Form.Link>
+        <Form.Link to="/signin">Entrar</Form.Link>
       </Form.Footer>
     </Profitfyme>
   );
 }
 
-export default React.memo(SignIn);
+export default React.memo(Recover);

@@ -6,6 +6,7 @@ import * as ROUTES from './constants/routes';
 import Home from './pages/Home';
 import SignUp from './pages/SignUp';
 import SignIn from './pages/SignIn';
+import Recover from './pages/Recover';
 import { AuthProvider } from './providers/Auth/useAuth';
 import reducer, { initialState } from './providers/Auth/reducer';
 
@@ -16,6 +17,9 @@ const App: React.FC = () => {
     <Router>
       <AuthProvider initialState={initialState} reducer={reducer}>
         <Switch>
+          <IsUserRedirect user={user} loggedInPath={ROUTES.DASHBOARD} path={ROUTES.RECOVER}>
+            <Recover />
+          </IsUserRedirect>
           <IsUserRedirect user={user} loggedInPath={ROUTES.DASHBOARD} path={ROUTES.SIGN_IN}>
             <SignIn />
           </IsUserRedirect>

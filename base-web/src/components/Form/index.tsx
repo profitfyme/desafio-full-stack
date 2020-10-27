@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import { Container, Header, Footer } from './styles';
 
@@ -13,6 +14,7 @@ const FormFooter: React.FC = React.memo(({ children }) => {
 interface FormProps {
   Header: typeof FormHeader;
   Footer: typeof FormFooter;
+  Link: typeof Link;
 }
 
 interface Props {
@@ -27,5 +29,6 @@ const Form: FormProps & React.FC<Props> = ({ onSubmit, children }) => {
 
 Form.Header = FormHeader;
 Form.Footer = FormFooter;
+Form.Link = Link;
 
 export default Form;

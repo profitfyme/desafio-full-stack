@@ -132,8 +132,8 @@ const SignUp: React.FC = () => {
       </Form>
 
       <Form.Footer>
-        <a href="#/">Esqueceu sua senha?</a>
-        <a href="#/">Entrar</a>
+        <Form.Link to="/recover">Esqueceu sua senha?</Form.Link>
+        <Form.Link to="/signin">Entrar</Form.Link>
       </Form.Footer>
     </Profitfyme>
   );
