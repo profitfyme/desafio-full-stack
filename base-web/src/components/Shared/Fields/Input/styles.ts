@@ -6,12 +6,10 @@ export const Container = styled.div`
 
 export const TextField = styled.input`
   background: #FFFFFF;
-  box-shadow: 2px 1px 3px rgba(0, 0, 0, 0.25);
-  border-radius: 5px;
-  border: 0;
   padding: 11px 0 ;
   padding-right: 11px;
-  margin-bottom: 24px;
+  border-radius: 5px;
+  border: 0;
 
   font-weight: 600;
   font-size: 16px;
@@ -26,23 +24,15 @@ export const TextField = styled.input`
 
 export const ImageIcon = styled.img`
   background: #FFFFFF;
-  box-shadow: -1px 1px 3px rgba(0, 0, 0, 0.25);
+  padding: 0 12px;
   border-radius: 5px;
   border: 0;
-  margin-bottom: 24px;
-  padding: 0 12px;
 `;
 
 export const InputGroupAddon = styled.div`
   display: flex;
-
-  img {
-    border-bottom-right-radius: 0;
-    border-top-right-radius: 0;
-  }
-
-  input {
-    border-bottom-left-radius: 0;
-    border-top-left-radius: 0;
-  }
+  margin-bottom: 24px;
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.25), 0px 1px 3px rgba(0, 0, 0, 0.02);
+  border-radius: 5px;
+  background: #FFFFFF;
 `;
