@@ -16,14 +16,28 @@ import { ActionTypes, useAuth } from '../../providers/Auth/useAuth';
 const SignUp: React.FC = () => {
   const [state, dispatch] = useAuth();
 
-  const isActive = React.useMemo(() => {
+  const hasRequiredFields = React.useMemo(() => {
     return !!state.user?.firstname
       && !!state.user?.lastname
       && !!state.user?.email;
   }, [state.user?.firstname, state.user?.lastname, state.user?.email]);
 
+  const verifiedPasswords = React.useMemo(() => {
+    return state.password?.current === state.password?.confirmation;
+  }, [state.password]);
+
+  React.useEffect(() => {
+    return () => {
+      dispatch({ type: ActionTypes.SET_INITIAL_STATE });
+    }
+  }, [dispatch]);
+
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+
+    if (hasRequiredFields && verifiedPasswords) {
+      console.log('submited..')
+    }
   }
 
   return (
@@ -78,14 +92,40 @@ const SignUp: React.FC = () => {
         />
 
         <Input placeholder="" icon={BrandBrIcon} />
-        <Input type="password" placeholder="Senha" icon={UnlockIcon} />
-        <Input type="password" placeholder="Confirma senha" icon={UnlockIcon} />
+        <Input
+          type="password"
+          placeholder="Senha"
+          icon={UnlockIcon}
+          onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+            dispatch({
+              type: ActionTypes.SET_PASSWORD,
+              password: {
+                ...state.password,
+                current: event.currentTarget.value,
+              },
+            });
+          }}
+        />
+        <Input
+          type="password"
+          placeholder="Confirma senha"
+          icon={UnlockIcon}
+          onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+            dispatch({
+              type: ActionTypes.SET_PASSWORD,
+              password: {
+                ...state.password,
+                confirmation: event.currentTarget.value,
+              },
+            });
+          }}
+        />
 
         <Term>
           Ao se cadastrar você automaticamente concorda com nossos <a href="#/">Termos de Uso</a>
         </Term>
 
-        <SubmitBtn isActive={isActive}>
+        <SubmitBtn isActive={hasRequiredFields && verifiedPasswords}>
           <img src={SendIcon} alt="submit"/>
           Cadastrar
         </SubmitBtn>
@@ -99,4 +139,4 @@ const SignUp: React.FC = () => {
   );
 }
 
-export default SignUp;
+export default React.memo(SignUp);

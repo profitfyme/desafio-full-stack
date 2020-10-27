@@ -4,13 +4,10 @@ export { ActionTypes };
 
 export const initialState: InitialState = {
   user: {
-    id: null,
     firstname: '',
     lastname: '',
     email: '',
-    updatedAt: null,
   },
-  token: null
 };
 
 const reducer = (state: InitialState, action: Action) => {
@@ -19,6 +16,12 @@ const reducer = (state: InitialState, action: Action) => {
       return {
         ...state,
         user: action.user,
+      };
+
+    case ActionTypes.SET_PASSWORD:
+      return {
+        ...state,
+        password: action.password,
       };
 
     case ActionTypes.SET_INITIAL_STATE:

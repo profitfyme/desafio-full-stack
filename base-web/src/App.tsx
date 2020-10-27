@@ -6,7 +6,6 @@ import * as ROUTES from './constants/routes';
 import Home from './pages/Home';
 import SignUp from './pages/SignUp';
 import SignIn from './pages/SignIn';
-
 import { AuthProvider } from './providers/Auth/useAuth';
 import reducer, { initialState } from './providers/Auth/reducer';
 
@@ -35,4 +34,4 @@ const App: React.FC = () => {
   );
 }
 
-export default App;
+export default React.memo(App);
