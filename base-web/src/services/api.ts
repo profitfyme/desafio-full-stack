@@ -9,7 +9,9 @@ export class ApiService {
     this.api = axios.create({ baseURL });
   }
 
-  // public login() {
+  // public async login(url: string, data?: any, config?: AxiosRequestConfig) {
+  //   const response = await this.post(url, data, config);
+  //   console.log(response)
   //   this.api.defaults.headers.Authorization = `Bearer ${token}`;
   // }
 

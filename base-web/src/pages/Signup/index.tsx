@@ -1,4 +1,5 @@
 import React from 'react';
+import { useMutation } from 'react-query';
 import Form from '../../components/Form';
 import Profitfyme from '../../components/Profitfyme';
 import Input from '../../components/Shared/Fields/Input';
@@ -11,10 +12,17 @@ import EmailIcon from '../../assets/images/email.svg';
 import BrandBrIcon from '../../assets/images/brand-br.svg';
 import UnlockIcon from '../../assets/images/unlock.svg';
 import SendIcon from '../../assets/images/send.svg';
+
 import { ActionTypes, useAuth } from '../../providers/Auth/useAuth';
+import userService from '../../services/user';
+import { User } from '../../interfaces/models/user.interface';
+import { SIGN_IN } from '../../constants/routes';
+import { useHistory } from 'react-router-dom';
 
 const SignUp: React.FC = () => {
   const [state, dispatch] = useAuth();
+
+  const history = useHistory();
 
   const hasRequiredFields = React.useMemo(() => {
     return !!state.user?.firstname
@@ -23,7 +31,9 @@ const SignUp: React.FC = () => {
   }, [state.user?.firstname, state.user?.lastname, state.user?.email]);
 
   const verifiedPasswords = React.useMemo(() => {
-    return state.password?.current === state.password?.confirmation;
+    return !!state.password?.current && (
+      state.password?.current === state.password?.confirmation
+    );
   }, [state.password]);
 
   React.useEffect(() => {
@@ -32,11 +42,24 @@ const SignUp: React.FC = () => {
     }
   }, [dispatch]);
 
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
+  const [mutate, { status }] = useMutation(
+    () => userService.save(
+      state.user as User,
+      state.password?.current as string,
+      state.password?.confirmation as string
+    )
+  );
 
+  React.useEffect(() => {
+    if (status === 'success') {
+      history.push(SIGN_IN);
+    }
+  }, [status])
+
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
     if (hasRequiredFields && verifiedPasswords) {
-      console.log('submited..')
+      await mutate()
     }
   }
 
