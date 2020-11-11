@@ -11,6 +11,7 @@ O layout você encontra em: https://www.figma.com/file/XlARo5zdyBVeF3EFSkGSbr/Te
 
 - TypeScript (opcional no front-end)
 - Node.js
+- Express
 - PostgresSQL
 - React.js
 - Styled Components
