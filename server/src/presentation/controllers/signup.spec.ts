@@ -2,10 +2,12 @@ import { SignUpController } from './signup'
 import { MissingParamError } from '../errors/missing-param-error'
 import { InvalidParamError } from '../errors/invalid-param-error'
 import { EmailValidator } from '../protocols/email-validator'
+import { PhoneValidator } from '../protocols/phone-validator'
 
 interface SutTypes {
   sut: SignUpController
   emailValidatorStub: EmailValidator
+  phoneValidatorStub: PhoneValidator
 }
 
 const makeSut = (): SutTypes => {
@@ -14,11 +16,21 @@ const makeSut = (): SutTypes => {
       return true
     }
   }
+
+  class PhoneValidatorStub implements PhoneValidator {
+    isValid (phone: string): boolean {
+      return true
+    }
+  }
+
   const emailValidatorStub = new EmailValidatorStub()
-  const sut = new SignUpController(emailValidatorStub)
+  const phoneValidatorStub = new PhoneValidatorStub()
+
+  const sut = new SignUpController(emailValidatorStub, phoneValidatorStub)
   return {
     sut,
-    emailValidatorStub
+    emailValidatorStub,
+    phoneValidatorStub
   }
 }
 
@@ -152,5 +164,40 @@ describe('SignUp Controller', () => {
     }
     sut.handle(httpRequest)
     expect(isValidSpy).toHaveBeenCalledWith('any_email@mail.com')
+  })
+
+  test('Should return 400 if an invalid phone is provided', () => {
+    const { sut, phoneValidatorStub } = makeSut()
+    jest.spyOn(phoneValidatorStub, 'isValid').mockReturnValueOnce(false)
+    const httpRequest = {
+      body: {
+        name: 'any_name',
+        surname: 'any_surname',
+        email: 'any_email',
+        phone: 'invalid_phone',
+        password: 'any_password',
+        passwordConfirmation: 'any_password'
+      }
+    }
+    const httpResponse = sut.handle(httpRequest)
+    expect(httpResponse.statusCode).toBe(400)
+    expect(httpResponse.body).toEqual(new InvalidParamError('phone'))
+  })
+
+  test('Should call PhoneValidator with correct phone', () => {
+    const { sut, phoneValidatorStub } = makeSut()
+    const isValidSpy = jest.spyOn(phoneValidatorStub, 'isValid')
+    const httpRequest = {
+      body: {
+        name: 'any_name',
+        surname: 'any_surname',
+        email: 'any_email@mail.com',
+        phone: 'any_phone',
+        password: 'any_password',
+        passwordConfirmation: 'any_password'
+      }
+    }
+    sut.handle(httpRequest)
+    expect(isValidSpy).toHaveBeenCalledWith('any_phone')
   })
 })
