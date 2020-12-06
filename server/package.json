@@ -5,7 +5,10 @@
   "license": "MIT",
   "scripts": {
     "lint": "eslint src --max-warnings=0",
-    "test": "jest --watch"
+    "test": "jest --passWithNoTests --silent",
+    "test:verbose": "jest --passWithNoTests",
+    "test:unit": "npm test -- --watch -c jest-unit-config.js",
+    "test:coverage": "npm test -- --coverage"
   },
   "husky": {
     "hooks": {
