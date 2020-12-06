@@ -5,7 +5,7 @@ import { Controller } from '../protocols/controller'
 
 export class SignUpController implements Controller {
   handle (httpRequest: HttpRequest): HttpResponse {
-    const requiredFields = ['name', 'surname', 'email']
+    const requiredFields = ['name', 'surname', 'email', 'phone']
     for (const field of requiredFields) {
       if (!httpRequest.body[field]) {
         return badRequest(new MissingParamError(field))
