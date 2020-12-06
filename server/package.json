@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "lint": "eslint src --max-warnings=0",
-    "test": "jest"
+    "test": "jest --watch"
   },
   "husky": {
     "hooks": {
