@@ -11,21 +11,45 @@ interface SutTypes {
   phoneValidatorStub: PhoneValidator
 }
 
-const makeSut = (): SutTypes => {
+const makeEmailValidator = (): EmailValidator => {
   class EmailValidatorStub implements EmailValidator {
     isValid (email: string): boolean {
       return true
     }
   }
+  return new EmailValidatorStub()
+}
 
+const makeEmailValidatorWithError = (): EmailValidator => {
+  class EmailValidatorStub implements EmailValidator {
+    isValid (email: string): boolean {
+      throw new Error()
+    }
+  }
+  return new EmailValidatorStub()
+}
+
+const makePhoneValidator = (): EmailValidator => {
   class PhoneValidatorStub implements PhoneValidator {
     isValid (phone: string): boolean {
       return true
     }
   }
+  return new PhoneValidatorStub()
+}
 
-  const emailValidatorStub = new EmailValidatorStub()
-  const phoneValidatorStub = new PhoneValidatorStub()
+const makePhoneValidatorWithError = (): EmailValidator => {
+  class PhoneValidatorStub implements PhoneValidator {
+    isValid (phone: string): boolean {
+      throw new Error()
+    }
+  }
+  return new PhoneValidatorStub()
+}
+
+const makeSut = (): SutTypes => {
+  const emailValidatorStub = makeEmailValidator()
+  const phoneValidatorStub = makePhoneValidator()
 
   const sut = new SignUpController(emailValidatorStub, phoneValidatorStub)
   return {
@@ -203,18 +227,8 @@ describe('SignUp Controller', () => {
   })
 
   test('Should return 500 if EmailValidator throws', () => {
-    class EmailValidatorStub implements EmailValidator {
-      isValid (email: string): boolean {
-        throw new Error()
-      }
-    }
-    class PhoneValidatorStub implements PhoneValidator {
-      isValid (phone: string): boolean {
-        return true
-      }
-    }
-    const emailValidatorStub = new EmailValidatorStub()
-    const phoneValidatorStub = new PhoneValidatorStub()
+    const emailValidatorStub = makeEmailValidatorWithError()
+    const phoneValidatorStub = makePhoneValidatorWithError()
     const sut = new SignUpController(emailValidatorStub, phoneValidatorStub)
     const httpRequest = {
       body: {
@@ -232,18 +246,8 @@ describe('SignUp Controller', () => {
   })
 
   test('Should return 500 if PhoneValidator throws', () => {
-    class EmailValidatorStub implements EmailValidator {
-      isValid (email: string): boolean {
-        return true
-      }
-    }
-    class PhoneValidatorStub implements PhoneValidator {
-      isValid (phone: string): boolean {
-        throw new Error()
-      }
-    }
-    const emailValidatorStub = new EmailValidatorStub()
-    const phoneValidatorStub = new PhoneValidatorStub()
+    const emailValidatorStub = makeEmailValidatorWithError()
+    const phoneValidatorStub = makePhoneValidatorWithError()
     const sut = new SignUpController(emailValidatorStub, phoneValidatorStub)
     const httpRequest = {
       body: {
