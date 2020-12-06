@@ -4,11 +4,31 @@ import { InvalidParamError } from '../errors/invalid-param-error'
 import { ServerError } from '../errors/server-error'
 import { EmailValidator } from '../protocols/email-validator'
 import { PhoneValidator } from '../protocols/phone-validator'
+import { AccountModel } from '../../domain/models/account'
+import { AddAccountModel, AddAccount } from '../../domain/usecases/add-account'
 
 interface SutTypes {
   sut: SignUpController
   emailValidatorStub: EmailValidator
   phoneValidatorStub: PhoneValidator
+  addAccountStub: AddAccount
+}
+
+const makeAddAccount = (): AddAccount => {
+  class AddAccountStub implements AddAccount {
+    add (account: AddAccountModel): AccountModel {
+      const fakeAccount = {
+        id: 'valid_id',
+        name: 'valid_name',
+        surname: 'valid_surname',
+        email: 'valid_email',
+        phone: 'valid_phone',
+        password: 'valid_password'
+      }
+      return fakeAccount
+    }
+  }
+  return new AddAccountStub()
 }
 
 const makeEmailValidator = (): EmailValidator => {
@@ -50,12 +70,14 @@ const makePhoneValidatorWithError = (): EmailValidator => {
 const makeSut = (): SutTypes => {
   const emailValidatorStub = makeEmailValidator()
   const phoneValidatorStub = makePhoneValidator()
+  const addAccountStub = makeAddAccount()
 
-  const sut = new SignUpController(emailValidatorStub, phoneValidatorStub)
+  const sut = new SignUpController(emailValidatorStub, phoneValidatorStub, addAccountStub)
   return {
     sut,
     emailValidatorStub,
-    phoneValidatorStub
+    phoneValidatorStub,
+    addAccountStub
   }
 }
 
@@ -246,7 +268,8 @@ describe('SignUp Controller', () => {
   test('Should return 500 if EmailValidator throws', () => {
     const emailValidatorStub = makeEmailValidatorWithError()
     const phoneValidatorStub = makePhoneValidatorWithError()
-    const sut = new SignUpController(emailValidatorStub, phoneValidatorStub)
+    const addAccountStub = makeAddAccount()
+    const sut = new SignUpController(emailValidatorStub, phoneValidatorStub, addAccountStub)
     const httpRequest = {
       body: {
         name: 'any_name',
@@ -265,7 +288,8 @@ describe('SignUp Controller', () => {
   test('Should return 500 if PhoneValidator throws', () => {
     const emailValidatorStub = makeEmailValidatorWithError()
     const phoneValidatorStub = makePhoneValidatorWithError()
-    const sut = new SignUpController(emailValidatorStub, phoneValidatorStub)
+    const addAccountStub = makeAddAccount()
+    const sut = new SignUpController(emailValidatorStub, phoneValidatorStub, addAccountStub)
     const httpRequest = {
       body: {
         name: 'any_name',
@@ -279,5 +303,28 @@ describe('SignUp Controller', () => {
     const httpResponse = sut.handle(httpRequest)
     expect(httpResponse.statusCode).toBe(500)
     expect(httpResponse.body).toEqual(new ServerError())
+  })
+
+  test('Should call addAccount with correct values', () => {
+    const { sut, addAccountStub } = makeSut()
+    const addSpy = jest.spyOn(addAccountStub, 'add')
+    const httpRequest = {
+      body: {
+        name: 'any_name',
+        surname: 'any_surname',
+        email: 'any_email@mail.com',
+        phone: 'any_phone',
+        password: 'any_password',
+        passwordConfirmation: 'any_password'
+      }
+    }
+    sut.handle(httpRequest)
+    expect(addSpy).toHaveBeenCalledWith({
+      name: 'any_name',
+      surname: 'any_surname',
+      email: 'any_email@mail.com',
+      phone: 'any_phone',
+      password: 'any_password'
+    })
   })
 })
