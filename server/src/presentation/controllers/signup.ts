@@ -53,7 +53,8 @@ export class SignUpController implements Controller {
         password
       })
       return ok(account)
-    } catch {
+    } catch (error) {
+      console.log('O que deu: ', error)
       return serverError()
     }
   }
