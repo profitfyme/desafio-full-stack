@@ -7,6 +7,7 @@ exports.up = function (knex) {
     table.string('email', 50).unique().notNullable()
     table.string('phone', 50).unique().notNullable()
     table.string('password', 255).notNullable()
+    table.string('access_token', 255)
   })
 }
 
