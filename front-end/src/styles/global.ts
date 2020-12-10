@@ -9,9 +9,9 @@ export default createGlobalStyle`
   }
 
   body {
-    width: 1440px;
-    height: 100vh;
-    background: linear-gradient(180deg, #5DC74D 0%, rgba(93, 199, 77, 0.67) 100%);
+    min-width: 1440px;
+    min-height: 1269px;
+    background: linear-gradient(0deg, rgba(93, 199, 77, 0.8), rgba(93, 199, 77, 1));
     color: #FFF;
     -webkit-font-smoothing: antialiased;
   }
