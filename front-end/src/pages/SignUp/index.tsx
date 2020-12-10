@@ -6,8 +6,10 @@ import { Form } from '@unform/web';
 import * as Yup from 'yup';
 import { Link, useHistory } from 'react-router-dom';
 
-import { useAuth } from '../../hooks/auth';
+import api from '../../services/api';
+
 import { useToast } from '../../hooks/toast';
+
 import getValidationErrors from '../../utils/getValidationErrors';
 
 import logoImg from '../../assets/logo.svg';
@@ -17,41 +19,59 @@ import Button from '../../components/Button';
 
 import { Container, Content, AnimationContainer, Footer } from './styles';
 
-interface SignInFormData {
+interface SignUpFormData {
+  name: string;
+  surname: string;
+  telephone: number;
   email: string;
   password: string;
 }
 
-const SignIn: React.FC = () => {
+const SignUp: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
 
-  const { signIn } = useAuth();
   const { addToast } = useToast();
 
   const history = useHistory();
 
   const handleSubmit = useCallback(
-    async (data: SignInFormData) => {
+    async (data: SignUpFormData) => {
       try {
         formRef.current?.setErrors({});
 
         const schema = Yup.object().shape({
+          name: Yup.string().required('Nome obrigatorio'),
+          surname: Yup.string().required('Sobrenome obrigatorio'),
+          telephone: Yup.string().required('Telefone obrigatorio'),
           email: Yup.string()
             .required('E-mail obrigatorio')
             .email('Digite um e-mail válido'),
-          password: Yup.string().required('Senha obrigatoria'),
+          password: Yup.string().required('Campo obrigatorio'),
+          password_confirmation: Yup.string().oneOf(
+            [Yup.ref('password'), undefined],
+            'Confirmação incorreta',
+          ),
         });
 
         await schema.validate(data, {
           abortEarly: false,
         });
 
-        await signIn({
+        await api.post('/users', {
+          name: data.name,
+          surname: data.surname,
+          telephone: data.telephone,
           email: data.email,
-          password: data.password,
+          password: data.password
         });
 
-        history.push('/profile');
+        history.push('/');
+
+        addToast({
+          type: 'success',
+          title: 'Cadastro realizado!',
+          description: 'Você já pode fazer seu login no Profitfy!',
+        });
       } catch (error) {
         if (error instanceof Yup.ValidationError) {
           const errors = getValidationErrors(error);
@@ -63,12 +83,12 @@ const SignIn: React.FC = () => {
 
         addToast({
           type: 'error',
-          title: 'Error na authenticação',
-          description: 'Ocorreu um erro ao fazer login, valide as credenciais.',
+          title: 'Error no cadastro',
+          description: 'Ocorreu um erro ao fazer cadastro, tente novamente.',
         });
       }
     },
-    [signIn, addToast, history],
+    [addToast, history],
   );
 
   return (
@@ -82,7 +102,7 @@ const SignIn: React.FC = () => {
 
             <Input name="name" icon={FaUserAlt} placeholder="Nome" />
             <Input name="surname" icon={FaUserCircle} placeholder="Sobrenome" />
-            <Input name="name" icon={GiBrazilFlag} placeholder="" />
+            <Input name="telephone" icon={GiBrazilFlag} placeholder="" />
             <Input name="email" icon={FaEnvelope} placeholder="Email Pessoal" />
             <Input
               name="password"
@@ -92,13 +112,13 @@ const SignIn: React.FC = () => {
             />
 
             <Input
-              name="password-confirmation"
+              name="password_confirmation"
               icon={FaUnlockAlt}
               type="password"
               placeholder="Confirmar senha"
             />
 
-            <strong>Ao se cadastrar você automaticamente concorda com nossos Termos de Uso</strong>
+            <h3>Ao se cadastrar você automaticamente concorda com nossos <a href='#'>Termos de Uso</a></h3>
 
             <Button type="submit" icon={FaPaperPlane}>Cadastrar</Button>
           </Form>
@@ -117,4 +137,4 @@ const SignIn: React.FC = () => {
   );
 }
 
-export default SignIn;
+export default SignUp;

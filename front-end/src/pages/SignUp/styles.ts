@@ -35,6 +35,33 @@ export const AnimationContainer = styled.div`
     padding-bottom: 1px;
     text-align: center;
 
+    h3 {
+      color: #94A3B3;
+      margin-top:32px;
+
+      font-family: Open Sans;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 12px;
+      line-height: 150%;
+
+      a {
+        color: #4F53BC;
+        font-family: Open Sans;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 12px;
+        line-height: 150%;
+
+        text-decoration: none;
+        transition: color 0.2s;
+
+        &:hover {
+          color: ${shade(0.07, '#4F53BC')};
+        }
+      }
+    }
+
     p {
       color: #94A3B3;
       font-weight:600;
@@ -43,14 +70,8 @@ export const AnimationContainer = styled.div`
       margin-bottom: 30px;
     }
 
-    strong {
-      color: #94A3B3;
-      font-weight:400;
-      font-size: 14px;
-    }
-
     button {
-      margin-top: 32px;
+      margin-top: 18px;
       margin-left: 186px;
       margin-bottom: 46px;
     }
