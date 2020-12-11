@@ -1,47 +1,85 @@
-# **O Desafio**
+## Comandos para executar Front-end:
 
-Desenvolver uma aplicação, incluindo uma API e uma tela de cadastro, seguindo o layout apresentado no Figma.
+> cd front-end
+> yarn
+> yarn start
 
-Guardar usuário no banco de dados.
+## Comandos para executar a API:
 
-O layout você encontra em: https://www.figma.com/file/XlARo5zdyBVeF3EFSkGSbr/Teste_Fullstack_Profitfy.me?node-id=0%3A1
+> cd back-end
+> yarn
+> yarn typeorm migration:run
+> yarn dev
 
+## Variables de ambiente
 
-## Requisitos
+Front-end:
 
-- TypeScript (opcional no front-end)
+REACT_APP_API_URL='' Endereço da API
+
+Back-end:
+
+# Application
+APP_SECRET=
+APP_API_URL=
+APP_WEB_URL=
+
+APP_SECRET um string para encriptar os dados do token.
+APP_API_URL a URL da API
+APP_WEB_URL a URL da Aplicação
+
+## Banco de dados
+
+Migração de dados: yarn typeorm migration:run
+
+## Configuração do TypeORM para conexação com BD
+
+Copiar o arquivo ormconfig.example.json
+alterar as seguintes linhas:
+
+Para PROD:
+
+"host": "",
+"port": 5432,
+"username": "",
+"password": "",
+"database": "",
+"entities": [
+  "./dist/modules/**/infra/typeorm/entities/*.js" 
+],
+"migrations": [
+  "./dist/shared/infra/typeorm/migrations/*.js"
+],
+"cli": {
+  "migrationsDir": "./dist/shared/infra/typeorm/migrations"
+}
+
+Para DEV:
+
+"port": 5432,
+"username": "",
+"password": "",
+"database": "",
+"entities": [
+  "./src/modules/**/infra/typeorm/entities/*.ts"
+],
+"migrations": [
+  "./src/shared/infra/typeorm/migrations/*.ts"
+],
+"cli": {
+  "migrationsDir": "./src/shared/infra/typeorm/migrations"
+}
+
+## Tecnologias utilizadas
+
+- TypeScript
 - Node.js
 - Express
 - PostgresSQL
 - React.js
 - Styled Components
 
-## Diferenciais
+## Testes unitarios
 
-- Testes automatizados
-- Clean architecture
-- Docker
-
-## Entre os critérios de avaliação estão:
-
-- Usabilidade
-- Criatividade
-- Código limpo e organização
-- Documentação de código
-- Documentação do projeto (readme)
-- Performance
-
-## Como devo entregar o desafio?
-
-- Dê um fork no projeto
-- Crie uma branch a partir da branch master deste respositório
-- Implemente o desafio de código
-- Faça um push de sua branch com o desafio implementado
-- Crie um pull request para branch master
-- Envie um e-mail para victorlevi@profitfy.me, com o assunto '[Teste Dev] Desafio'
-
-## Dúvida
-
-Se tiver qualquer dúvida sobre esse teste, envie um email com o título '[Teste Dev] Dúvida' para victorlevi@profitfy.me
-
-Good Luck! 🍀
+> cd back-end
+> yarn test --coverage
