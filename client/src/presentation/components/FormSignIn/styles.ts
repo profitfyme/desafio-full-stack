@@ -14,17 +14,9 @@ export const FormWrapper = styled.div`
     }
   `}
 `
-
 export const FormObs = styled.div`
   display: flex;
   width: 100%;
   flex-direction: column;
   margin-top: 40px;
-`
-
-export const FormTerms = styled.p`
-  color: #94A3B3;
-  font-size: 12px;
-  font-family: 'Open Sans';
-  text-align: center;
 `

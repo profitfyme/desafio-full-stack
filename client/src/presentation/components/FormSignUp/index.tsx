@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect } from 'react'
 import { User, UserCircle, Envelope, Phone, Lock, PaperPlane } from '@styled-icons/fa-solid'
 import { useHistory } from 'react-router-dom'
-import { FormContext, ApiContext } from '../../context'
+// import { FormContext, ApiContext } from '../../context'
 import { Validation } from '../../protocols/validation'
 import { AddAccount } from '../../../domain/usecases/add-account'
 
-import { FormWrapper, FormLink } from '../Form'
+import { FormWrapper } from '../Form'
 import Button from '../Button'
 import TextField from '../TextField'
 
@@ -17,17 +17,22 @@ type Props = {
 }
 
 const FormSignUp = ({ validation, addAccount }: Props): any => {
-  console.log(validation)
-  console.log(addAccount)
+  // const { setCurrentAccount } = useContext(ApiContext)
   const history = useHistory()
   const [state, setState] = useState({
     isFormInvalid: true,
     name: '',
+    nameEdited: false,
     surname: '',
+    surnameEdited: false,
     email: '',
+    emailEdited: false,
     phone: '',
+    phoneEdited: false,
     password: '',
+    passwordEdited: false,
     passwordConfirmation: '',
+    passwordConfirmationEdited: false,
     nameError: '',
     surnameError: '',
     phoneError: '',
@@ -46,13 +51,12 @@ const FormSignUp = ({ validation, addAccount }: Props): any => {
 
   const validate = (field: string): void => {
     const { name, surname, email, phone, password, passwordConfirmation } = state
-    const formData = { name, email, password, passwordConfirmation }
+    const formData = { name, surname, email, phone, password, passwordConfirmation }
     setState(old => ({ ...old, [`${field}Error`]: validation.validate(field, formData) }))
-    setState(old => ({ ...old, isFormInvalid: !!old.nameError || !!old.emailError || !!old.passwordError || !!old.passwordConfirmationError }))
+    setState(old => ({ ...old, isFormInvalid: !!old.nameError || !!old.surnameError || !!old.emailError || !!old.surnameError || !!old.passwordError || !!old.passwordConfirmationError }))
   }
 
   const handleSubmit = async (event): Promise<void> => {
-    console.log('State: ', state)
     event.preventDefault()
     try {
       if (state.isFormInvalid) {
@@ -67,15 +71,22 @@ const FormSignUp = ({ validation, addAccount }: Props): any => {
         password: state.password,
         passwordConfirmation: state.passwordConfirmation
       })
-      //setCurrentAccount(account)
-      history.replace('/')
+      // setCurrentAccount(account)
+      history.replace('/login')
     } catch (error) {
       setState(old => ({
         ...old,
-        isLoading: false,
         mainError: error.message
       }))
     }
+  }
+
+  const handleChange = (e): any => {
+    setState({
+      ...state,
+      [e.target.name]: e.target.value,
+      [`${e.target.name}Edited`]: true
+    })
   }
 
   return (
@@ -87,13 +98,19 @@ const FormSignUp = ({ validation, addAccount }: Props): any => {
           type="name"
           icon={<User />}
           iconPosition="left"
+          value={state.name}
+          onChange={handleChange}
+          error={state.nameEdited ? state.nameError : null}
         />
         <TextField
           name="surname"
           placeholder="Sobrenome"
-          type="surname"
+          type="name"
           icon={<UserCircle />}
           iconPosition="left"
+          value={state.surname}
+          onChange={handleChange}
+          error={state.surnameEdited ? state.surnameError : null}
         />
         <TextField
           name="email"
@@ -101,13 +118,20 @@ const FormSignUp = ({ validation, addAccount }: Props): any => {
           type="email"
           icon={<Envelope />}
           iconPosition="left"
+          value={state.email}
+          onChange={handleChange}
+          error={state.emailEdited ? state.emailError : null}
         />
         <TextField
           name="phone"
-          placeholder="Telegone"
-          type="phone"
+          placeholder="Telefone"
+          type="number"
           icon={<Phone />}
           iconPosition="left"
+          value={state.phone}
+          onChange={handleChange}
+          error={state.phoneEdited ? state.phoneError : null}
+
         />
         <TextField
           name="password"
@@ -115,13 +139,19 @@ const FormSignUp = ({ validation, addAccount }: Props): any => {
           type="password"
           icon={<Lock />}
           iconPosition="left"
+          value={state.password}
+          onChange={handleChange}
+          error={state.passwordEdited ? state.passwordError : null}
         />
         <TextField
-          name="confirm-password"
+          name="passwordConfirmation"
           placeholder="Confirmar Senha"
           type="password"
           icon={<Lock />}
           iconPosition="left"
+          value={state.passwordConfirmation}
+          onChange={handleChange}
+          error={state.passwordConfirmationEdited ? state.passwordConfirmationError : null}
         />
 
         <S.FormObs>
